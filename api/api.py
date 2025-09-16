@@ -1,9 +1,11 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
 from src.config.database import get_db
-from src.schema.user_schema import UserCreate, UserResponse
-from src.controller.user_controller import read_users, create_user, read_user_by_id, delete_user, update_user
+from src.schema.user_schema import UserCreate, UserResponse, UserBase
+from src.schema.token_schema import Token
+from src.service.token_service import verify_token
+from src.controller.user_controller import read_users, create_user, read_user_by_id, delete_user, update_user, login_user
 
 class UserApi:
     def __init__(self):
@@ -12,7 +14,7 @@ class UserApi:
 
     def add_routes(self):
 
-        @self.router.post(path="/", response_model=UserResponse)
+        @self.router.post(path="/register", response_model=UserResponse)
         def create_user_endpoint(user:UserCreate, db: Session = Depends(get_db)):
             return create_user(user, db)
         
@@ -25,9 +27,14 @@ class UserApi:
             return read_user_by_id(user_id, db)
         
         @self.router.delete(path="/{user_id}", response_model=UserResponse)
-        def delete_user__endpoint(user_id:int, db: Session = Depends(get_db)):
+        def delete_user__endpoint(user_id:int, request: Request, db: Session = Depends(get_db)):
+            verify_token(request=request)
             return delete_user(user_id, db)
         
         @self.router.put(path="/{user_id}", response_model=UserResponse)
         def update_user__endpoint(user_id:int, updated_user: UserCreate, db: Session = Depends(get_db)):
             return update_user(user_id, updated_user, db)
+
+        @self.router.post(path="/", response_model=Token)
+        def login(user: UserBase,  db: Session = Depends(get_db)):
+            return login_user(user, db)
