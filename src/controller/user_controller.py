@@ -5,11 +5,11 @@ from src.config.hash import pwd_context
 from src.model.user import User
 from src.service.auth_service import get_user_by_email
 from src.service.token_service import create_token
-from src.schema.user_schema import UserCreate, UserBase
+from src.schema.user_schema import UserCreate, UserLogin
 
 
 def create_user(user: UserCreate, db: Session):
-    db_user = get_user_by_email(email=User.email, db=db)
+    db_user = get_user_by_email(email=user.email, db=db)
     if db_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -63,7 +63,7 @@ def update_user(user_id: int, updated_user: UserCreate,db: Session):
     db.refresh(user)
     return user
 
-def login_user(user: UserBase, db: Session):
+def login_user(user: UserLogin, db: Session):
     db_user = get_user_by_email(
         db=db,
         email=user.email

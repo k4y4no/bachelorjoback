@@ -1,17 +1,20 @@
 from pydantic import BaseModel
 
-class UserBase(BaseModel):
+class UserLogin(BaseModel):
     email: str
     password: str
-
-class UserCreate(UserBase):
+class UserCreate(UserLogin):
     name: str
     firstname:str
     phone: str
 
 
 
-class UserResponse(UserCreate):
+class UserResponse(BaseModel):
+    email: str
+    name: str
+    firstname:str
+    phone: str
     id: int
 
     class Config:

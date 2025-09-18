@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 
 from src.config.database import get_db
-from src.schema.user_schema import UserCreate, UserResponse, UserBase
+from src.schema.user_schema import UserCreate, UserResponse, UserLogin
 from src.schema.token_schema import Token
 from src.service.token_service import verify_token
 from src.controller.user_controller import read_users, create_user, read_user_by_id, delete_user, update_user, login_user
@@ -36,5 +36,5 @@ class UserApi:
             return update_user(user_id, updated_user, db)
 
         @self.router.post(path="/", response_model=Token)
-        def login(user: UserBase,  db: Session = Depends(get_db)):
+        def login(user: UserLogin,  db: Session = Depends(get_db)):
             return login_user(user, db)
