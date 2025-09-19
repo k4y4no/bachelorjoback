@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from api.api import UserApi
+from api.auth_api import AuthApi
 from fastapi.middleware.cors import CORSMiddleware
 from src.config.database import Base, engine
 
@@ -10,6 +11,7 @@ app = FastAPI()
 
 # Api init
 user_api = UserApi()
+auth_api = AuthApi()
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,4 +25,9 @@ app.include_router(
     user_api.router,
     prefix="/user",
     tags=["User"]
+)
+app.include_router(
+    auth_api.router,
+    prefix="/auth",
+    tags=["Auth"]
 )
