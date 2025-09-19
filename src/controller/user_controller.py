@@ -76,7 +76,10 @@ def login_user(user: UserLogin, db: Session):
         )
     
     if pwd_context.verify(user.password, db_user.password): 
-        return create_token(data={"sub": user.email})
+        return create_token(data={
+            "sub": user.email,
+            "role": db_user.role
+            })
     else:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
