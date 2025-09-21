@@ -16,7 +16,7 @@ class GameAPI:
 
         @self.router.post("/", response_model=GameResponse)
         def create_game_endpoint(game: GameCreate, request: Request, db: Session = Depends(get_db)):
-            verify_token(request)
+            # verify_token(request)
             return create_game(game, db)
 
         @self.router.get("/", response_model=List[GameResponse])
@@ -29,10 +29,10 @@ class GameAPI:
 
         @self.router.put("/{game_id}", response_model=GameResponse)
         def update_game_endpoint(game_id: int, updated_game: GameCreate, request: Request, db: Session = Depends(get_db)):
-            verify_token(request)
+            # verify_token(request)
             return update_game(game_id, updated_game, db)
 
         @self.router.delete("/{game_id}", response_model=GameResponse)
         def delete_game_endpoint(game_id: int, request: Request, db: Session = Depends(get_db)):
-            verify_token(request)
+            # verify_token(request)
             return delete_game(game_id, db)

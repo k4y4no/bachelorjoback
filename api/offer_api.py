@@ -16,7 +16,7 @@ class OfferAPI:
 
         @self.router.post("/", response_model=OfferResponse)
         def create_offer_endpoint(offer: OfferCreate, request: Request, db: Session = Depends(get_db)):
-            verify_token(request)
+            # verify_token(request)
             return create_offer(offer, db)
 
         @self.router.get("/", response_model=List[OfferResponse])
@@ -29,10 +29,10 @@ class OfferAPI:
 
         @self.router.put("/{offer_id}", response_model=OfferResponse)
         def update_offer_endpoint(offer_id: int, updated_offer: OfferCreate, request: Request, db: Session = Depends(get_db)):
-            verify_token(request)
+            # verify_token(request)
             return update_offer(offer_id, updated_offer, db)
 
         @self.router.delete("/{offer_id}", response_model=OfferResponse)
         def delete_offer_endpoint(offer_id: int, request: Request, db: Session = Depends(get_db)):
-            verify_token(request)
+            # verify_token(request)
             return delete_offer(offer_id, db)
