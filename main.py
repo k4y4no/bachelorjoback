@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from api.api import UserApi
 from api.auth_api import AuthApi
 from api.game_api import GameAPI
+from api.offer_api import OfferAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.config.database import Base, engine
 
@@ -14,6 +15,7 @@ app = FastAPI()
 user_api = UserApi()
 auth_api = AuthApi()
 game_api = GameAPI()
+offer_api = OfferAPI()
 
 app.add_middleware(
     CORSMiddleware,
@@ -37,4 +39,9 @@ app.include_router(
     game_api.router,
     prefix="/game",
     tags=["Game"]
+)
+app.include_router(
+    offer_api.router,
+    prefix="/offer",
+    tags=["Offer"]
 )
