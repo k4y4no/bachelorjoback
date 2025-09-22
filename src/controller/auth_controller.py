@@ -42,6 +42,7 @@ def login_user(user: UserLogin, db: Session):
     
     if pwd_context.verify(user.password, db_user.password): 
         return create_token(data={
+            "id_sub": db_user.id,
             "sub": user.email,
             "role": db_user.role
             })
